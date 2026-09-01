@@ -1,32 +1,117 @@
-# React + TypeScript + Vite
+# 🚀 Full-Stack Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+> Mid-Level / Semi-Senior Developer | Java Spring Boot | React TypeScript | Cloud-Ready Architecture
 
-Currently, two official plugins are available:
+[![Java](https://img.shields.io/badge/Java-17%2C%2021-ED8B00?style=for-the-badge&logo=openjdk)]()
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2%2B-6DB33F?style=for-the-badge&logo=spring-boot)]()
+[![React](https://img.shields.io/badge/React-18%2C%2019-61DAFB?style=for-the-badge&logo=react)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x%2C%206.x-3178C6?style=for-the-badge&logo=typescript)]()
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+A personal portfolio built with React + TypeScript + Vite, designed to showcase backend and frontend experience in Java, Spring Boot, and modern web development.
 
-## React Compiler
+## About me
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+I am a Full-Stack Developer with 3+ years of experience building scalable, production-ready applications using modern technologies. I focus on REST APIs, security, real-time systems, and responsive frontend experiences.
 
-## Expanding the Oxlint configuration
+## Core expertise
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- Backend architecture with Java and Spring Boot
+- REST APIs and JWT authentication
+- React, TypeScript and responsive UI design
+- Database design with PostgreSQL/MySQL and JPA/Hibernate
+- Full-stack integration and cloud-ready application patterns
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Tech stack
+
+### Backend
+- Java 17 / 21
+- Spring Boot
+- JWT and Spring Security
+- JPA / Hibernate
+- PostgreSQL, MySQL, H2
+- Flyway
+- Swagger / OpenAPI
+
+### Frontend
+- React 18 / 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- Axios / Fetch API
+
+### Tools & infrastructure
+- Git / GitHub
+- Maven / npm
+- Redis
+- RabbitMQ
+- Docker basics
+- Prometheus / Micrometer
+
+## Featured projects
+
+### ForoHub API
+A forum platform with secure authentication, role-based authorization, and interactive API documentation.
+
+- Java 17
+- Spring Boot
+- MySQL
+- JWT
+- Spring Security
+- Swagger UI
+
+### TalentCircle
+A content pipeline platform that publishes content across multiple channels and processes events asynchronously.
+
+- Java 21
+- PostgreSQL
+- Redis
+- RabbitMQ
+- WebSocket
+- Spring Boot
+
+### EleVideo
+A modern app for converting vertical videos to horizontal format, focused on a polished user experience.
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Spring Boot
+
+## Portfolio app
+
+This repository contains the portfolio website itself, built as a modern single-page app with a clean, dark UI and sections for:
+
+- About
+- Tech stack
+- Projects
+- Contact
+
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Then open:
+
+```bash
+http://localhost:5173
+```
+
+## Build for production
+
+```bash
+npm run build
+```
+
+## Contact
+
+- GitHub: https://github.com/Ed-Pino
+- Portfolio repository: https://github.com/Ed-Pino/dev-portfolio
+
+## License
+
+This project is available under the MIT license.
