@@ -1,513 +1,145 @@
 import { useState } from 'react'
 import {
-  ArrowRight,
-  BriefcaseBusiness,
-  Building2,
-  Code2,
-  Cpu,
-  CreditCard,
-  Gamepad2,
-  Layers3,
-  Mail,
-  MapPin,
-  Plug,
-  Rocket,
-  ShoppingCart,
-  Sparkles,
-  Clapperboard,
+  ArrowRight, BriefcaseBusiness, Code2, Languages, Mail, MapPin, Moon, Sun,
 } from 'lucide-react'
 import './App.css'
 
-const navItems = ['About', 'Stack', 'Projects', 'Strengths', 'Contact']
+type Language = 'en' | 'es'
+type Theme = 'dark' | 'light'
 
-const stats = [
-  { label: 'Years of experience', value: '3+' },
-  { label: 'REST APIs built', value: '11+' },
-  { label: 'Featured repositories', value: '15+' },
-  { label: 'Service categories', value: '7' },
-]
-
-type StackGroup = {
-  title: string
-  items: string[]
+const content = {
+  en: {
+    nav: ['About', 'Stack', 'Projects', 'Strengths', 'Contact'],
+    connect: "Let's connect", eyebrow: 'Full-Stack Developer — Java • React • PostgreSQL',
+    title: 'Building reliable digital products with Java, React, and clean architecture.',
+    lead: 'Versatile full-stack developer specializing in Java / Spring Boot backend and complex enterprise applications with modern API integrations: OpenAI, Gutendex, WhatsApp, LinkedIn, and more.',
+    projects: 'See projects', available: 'Available for opportunities', role: 'Mid-Level / Semi-Senior',
+    remote: 'Open to remote and hybrid projects', about: 'About me',
+    aboutTitle: 'Developer focused on solving real business problems.',
+    aboutText: 'I am Ed-Pino, a full-stack developer with 3+ years building scalable products. I specialize in Java / Spring Boot backend, with a solid React + TypeScript frontend and PostgreSQL as my primary database.',
+    stack: 'Tech stack', stackTitle: 'Technologies I work with.', projectsTitle: 'Featured projects',
+    projectsSub: 'Explore a selection of projects and repositories.', strengths: 'Professional profile',
+    strengthsTitle: 'A practical, product-focused approach.', contact: 'Contact',
+    contactTitle: 'Open to new challenges, collaborations and technical opportunities.',
+    viewRepo: 'View repository', footer: 'Full-Stack Developer • Java Spring Boot • React TypeScript',
+    theme: 'Switch to light theme', language: 'Cambiar idioma a español',
+  },
+  es: {
+    nav: ['Sobre mí', 'Tecnologías', 'Proyectos', 'Fortalezas', 'Contacto'],
+    connect: 'Conectemos', eyebrow: 'Desarrollador Full-Stack — Java • React • PostgreSQL',
+    title: 'Creo productos digitales confiables con Java, React y arquitectura limpia.',
+    lead: 'Desarrollador full-stack versátil, especializado en backend Java / Spring Boot y aplicaciones empresariales con integraciones modernas: OpenAI, Gutendex, WhatsApp, LinkedIn y más.',
+    projects: 'Ver proyectos', available: 'Disponible para oportunidades', role: 'Nivel intermedio / semi-senior',
+    remote: 'Abierto a proyectos remotos e híbridos', about: 'Sobre mí',
+    aboutTitle: 'Desarrollador enfocado en resolver problemas reales de negocio.',
+    aboutText: 'Soy Ed-Pino, desarrollador full-stack con más de 3 años creando productos escalables. Me especializo en backend Java / Spring Boot, con frontend sólido en React + TypeScript y PostgreSQL como base de datos principal.',
+    stack: 'Tecnologías', stackTitle: 'Herramientas con las que trabajo.', projectsTitle: 'Proyectos destacados',
+    projectsSub: 'Explora una selección de proyectos y repositorios.', strengths: 'Perfil profesional',
+    strengthsTitle: 'Enfoque práctico y orientado al producto.', contact: 'Contacto',
+    contactTitle: 'Abierto a nuevos retos, colaboraciones y oportunidades técnicas.',
+    viewRepo: 'Ver repositorio', footer: 'Desarrollador Full-Stack • Java Spring Boot • React TypeScript',
+    theme: 'Cambiar a tema claro', language: 'Switch language to English',
+  },
 }
 
-const stackGroups: StackGroup[] = [
-  {
-    title: 'Backend',
-    items: ['Java 17', 'Spring Boot 3', 'Spring Data JPA', 'Spring Security', 'Flyway'],
-  },
-  {
-    title: 'Frontend',
-    items: ['React', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
-  },
-  {
-    title: 'Bases de Datos',
-    items: ['PostgreSQL', 'MySQL', 'H2', 'JPA / Hibernate'],
-  },
-  {
-    title: 'APIs',
-    items: ['REST APIs', 'OpenAI Integration', 'JWT', 'Gutendex API', 'Swagger / OpenAPI'],
-  },
-  {
-    title: 'Herramientas',
-    items: ['Jupyter Notebook', 'Git / GitHub', 'Maven', 'Redis', 'RabbitMQ', 'Docker basics'],
-  },
-  {
-    title: 'Especialidades',
-    items: ['Full-Stack Development', 'E-commerce', 'Video Processing', 'PWA'],
-  },
+const projects = [
+  { name: 'FieldFlow', url: 'FieldFlow', description: 'Full-stack platform for technical service management, work orders, status tracking, and field operations.', stack: 'Java 17 · Spring Boot 3 · React · TypeScript · PostgreSQL' },
+  { name: 'ForoHub API', url: 'ForoHub_API', description: 'Robust REST API for an online forum with JWT authentication and complete CRUD operations.', stack: 'Spring Boot · Java 17 · MySQL · JWT · Flyway' },
+  { name: 'TalentCircle', url: 'TalentCircle', description: 'Technical content publishing platform with multi-channel integration and a community feed.', stack: 'Java · Spring Boot · PostgreSQL · Redis · RabbitMQ' },
+  { name: 'GasSolution', url: 'GasSolution', description: 'Gas and fuel e-commerce with a product and services catalog.', stack: 'TypeScript · React · Vite · Tailwind' },
+  { name: 'Ecomart', url: 'Ecomart', description: 'App with OpenAI integration for product creation, automatic categorization, and image generation.', stack: 'Java · Spring Boot · OpenAI · React · PostgreSQL' },
+  { name: 'EleVideo', url: 'EleVideo', description: 'Video editor for converting vertical videos to horizontal format with duration controls.', stack: 'TypeScript · React · Vite · Tailwind' },
 ]
-
-type ProjectCategory =
-  | 'Enterprise & Backend'
-  | 'E-commerce'
-  | 'Multimedia'
-  | 'Finanzas'
-  | 'Datos & IA'
-  | 'Entretenimiento'
-  | 'CRM'
-
-type Project = {
-  name: string
-  repo: string
-  category: ProjectCategory
-  status: string
-  description: string
-  features: string[]
-  stack: string[]
-}
-
-const projects: Project[] = [
-  {
-    name: 'FieldFlow',
-    repo: 'https://github.com/Ed-Pino/FieldFlow',
-    category: 'Enterprise & Backend',
-    status: 'Production Ready',
-    description:
-      'Plataforma full-stack para gestión de servicios técnicos: órdenes de trabajo, seguimiento de estados y operación en campo.',
-    features: ['Órdenes de trabajo', 'Checklists', 'Evidencia fotográfica', 'Firma digital', 'PWA'],
-    stack: ['Java 17', 'Spring Boot 3', 'React', 'TypeScript', 'PostgreSQL'],
-  },
-  {
-    name: 'ForoHub API',
-    repo: 'https://github.com/Ed-Pino/ForoHub_API',
-    category: 'Enterprise & Backend',
-    status: 'Production Ready',
-    description:
-      'API RESTful robusta para foro online con autenticación JWT y operaciones CRUD completas.',
-    features: ['JWT Authentication', 'Temas y respuestas', 'Gestión de usuarios', 'Swagger UI'],
-    stack: ['Spring Boot', 'Java 17', 'MySQL', 'JWT', 'Flyway'],
-  },
-  {
-    name: 'TalentCircle',
-    repo: 'https://github.com/Ed-Pino/TalentCircle',
-    category: 'Enterprise & Backend',
-    status: 'Production Ready',
-    description:
-      'Plataforma de publicación de contenido técnico con integración multi-canal y community feed.',
-    features: ['Newsletter', 'LinkedIn', 'Twitter / X', 'Community feed'],
-    stack: ['Java', 'Spring Boot', 'PostgreSQL', 'Redis', 'RabbitMQ'],
-  },
-  {
-    name: 'GasSolution',
-    repo: 'https://github.com/Ed-Pino/GasSolution',
-    category: 'E-commerce',
-    status: 'Completed',
-    description: 'E-commerce de gas y combustible con catálogo de productos y servicios.',
-    features: ['Catálogo', 'Carrito', 'Responsive UI', 'Routing moderno'],
-    stack: ['TypeScript', 'React 19', 'Vite', 'Tailwind', 'React Router'],
-  },
-  {
-    name: 'Ecomart',
-    repo: 'https://github.com/Ed-Pino/Ecomart',
-    category: 'E-commerce',
-    status: 'Completed',
-    description:
-      'App con integración OpenAI: chat para creación de productos, categorización automática y generación de imágenes.',
-    features: ['Chat de productos', 'Categorización IA', 'Generación de imágenes'],
-    stack: ['Java', 'Spring Boot', 'OpenAI', 'React', 'PostgreSQL'],
-  },
-  {
-    name: 'EleVideo',
-    repo: 'https://github.com/Ed-Pino/EleVideo',
-    category: 'Multimedia',
-    status: 'Completed',
-    description:
-      'Editor para convertir videos verticales a formato horizontal con control de duración.',
-    features: ['Conversión de formato', 'Ajuste de duración', 'UI moderna'],
-    stack: ['TypeScript', 'React', 'Vite', 'Tailwind', 'Shadcn/ui'],
-  },
-  {
-    name: 'videoboost-pro',
-    repo: 'https://github.com/Ed-Pino/videoboost-pro',
-    category: 'Multimedia',
-    status: 'Completed',
-    description: 'Convertidor de video con procesamiento multimedia optimizado.',
-    features: ['Procesamiento multimedia', 'Conversión rápida'],
-    stack: ['TypeScript', 'React', 'Vite'],
-  },
-  {
-    name: 'CreditCard',
-    repo: 'https://github.com/Ed-Pino/CreditCard',
-    category: 'Finanzas',
-    status: 'Completed',
-    description: 'Sistema de operaciones de crédito con lógica financiera.',
-    features: ['Operaciones de crédito', 'Lógica financiera', 'Validaciones'],
-    stack: ['Java', 'Spring Boot'],
-  },
-  {
-    name: 'MoneyExchangeApp',
-    repo: 'https://github.com/Ed-Pino/MoneyExchangeApp',
-    category: 'Finanzas',
-    status: 'Completed',
-    description: 'Aplicación de cambio de divisas con tasas y conversión.',
-    features: ['Conversión de divisas', 'Tasas', 'Java backend'],
-    stack: ['Java', 'Spring Boot'],
-  },
-  {
-    name: 'LiterAlura',
-    repo: 'https://github.com/Ed-Pino/LiterAlura',
-    category: 'Datos & IA',
-    status: 'Completed',
-    description:
-      'App de búsqueda de libros clásicos con API Gutendex y almacenamiento persistente.',
-    features: ['API Gutendex', 'PostgreSQL', 'Búsquedas avanzadas'],
-    stack: ['Java', 'Spring Boot', 'PostgreSQL', 'JPA'],
-  },
-  {
-    name: 'Sentiment Analisis',
-    repo: 'https://github.com/Ed-Pino/Sentiment_Analisis',
-    category: 'Datos & IA',
-    status: 'Hackathon',
-    description: 'Hackathon de análisis de sentimientos con Machine Learning.',
-    features: ['NLP', 'Clasificación', 'Notebooks'],
-    stack: ['Jupyter Notebook', 'Python', 'ML'],
-  },
-  {
-    name: 'dev-portfolio',
-    repo: 'https://github.com/Ed-Pino/dev-portfolio',
-    category: 'Entretenimiento',
-    status: 'Live',
-    description:
-      'Portfolio profesional cloud-ready que demuestra capacidades full-stack.',
-    features: ['Cloud-ready', 'React + TS', 'Arquitectura moderna'],
-    stack: ['TypeScript', 'React', 'Vite', 'Tailwind'],
-  },
-  {
-    name: 'Mokepones',
-    repo: 'https://github.com/Ed-Pino/Mokepones',
-    category: 'Entretenimiento',
-    status: 'Completed',
-    description: 'Juego interactivo web con lógica de batalla y UI dinámica.',
-    features: ['Gameplay interactivo', 'JS vanilla'],
-    stack: ['JavaScript', 'HTML', 'CSS'],
-  },
-  {
-    name: 'NEXO CRM Integration',
-    repo: 'https://github.com/Ed-Pino/NEXO-CRM-intgration-WhatsApp-Email',
-    category: 'CRM',
-    status: 'Completed',
-    description: 'Integración CRM con WhatsApp y Email para automatizar comunicación.',
-    features: ['WhatsApp API', 'Email', 'Automatización CRM'],
-    stack: ['Java', 'Spring Boot', 'REST APIs'],
-  },
-]
-
-const categories: Array<'Todos' | ProjectCategory> = [
-  'Todos',
-  'Enterprise & Backend',
-  'E-commerce',
-  'Multimedia',
-  'Finanzas',
-  'Datos & IA',
-  'Entretenimiento',
-  'CRM',
-]
-
-const categoryIcons: Record<string, typeof Building2> = {
-  'Enterprise & Backend': Building2,
-  'E-commerce': ShoppingCart,
-  Multimedia: Clapperboard,
-  Finanzas: CreditCard,
-  'Datos & IA': Cpu,
-  Entretenimiento: Gamepad2,
-  CRM: Plug,
-}
-
-const strengths = [
-  'Especialista en Java / Spring Boot — backend robusto y escalable',
-  'Full-Stack proficiency — React + TypeScript en frontend',
-  'Experiencia en e-commerce — múltiples plataformas de ventas',
-  'Integración de APIs externas — OpenAI, Gutendex, WhatsApp, LinkedIn',
-  'Enfoque en PWA — aplicaciones progresivas offline-ready',
-  'Autenticación segura — JWT y manejo de credenciales',
-  'Diversidad de proyectos — desde finanzas hasta multimedia',
-]
-
-const profileHighlights = [
-  'REST APIs and secure authentication flows with JWT + Spring Security',
-  'Responsive client interfaces with React and TypeScript',
-  'Clean architecture and layered business logic',
-  'PostgreSQL design, migrations and data optimization',
-  'Integration with third-party APIs, AI and asynchronous jobs',
+const stacks = [
+  ['Backend', 'Java 17', 'Spring Boot 3', 'Spring Data JPA', 'Spring Security', 'Flyway'],
+  ['Frontend', 'React', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
+  ['Databases', 'PostgreSQL', 'MySQL', 'H2', 'JPA / Hibernate'],
+  ['APIs & tools', 'REST APIs', 'OpenAI', 'JWT', 'Swagger / OpenAPI', 'Git / GitHub', 'Docker'],
 ]
 
 function App() {
-  const [activeCategory, setActiveCategory] = useState<( typeof categories )[number]>('Todos')
+  const [activeCategory] = useState('')
+  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('portfolio-theme') as Theme) || 'dark')
+  const [language, setLanguage] = useState<Language>(() => (localStorage.getItem('portfolio-language') as Language) || 'en')
+  const text = content[language]
 
-  const filteredProjects =
-    activeCategory === 'Todos'
-      ? projects
-      : projects.filter((p) => p.category === activeCategory)
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    setTheme(next)
+    localStorage.setItem('portfolio-theme', next)
+  }
+  const toggleLanguage = () => {
+    const next = language === 'en' ? 'es' : 'en'
+    setLanguage(next)
+    localStorage.setItem('portfolio-language', next)
+    document.documentElement.lang = next
+  }
 
   return (
-    <div className="page-shell">
+    <div className="page-shell" data-theme={theme}>
       <header className="topbar container">
-        <div className="brand">
-          <span className="brand-mark">EP</span>
-          <span>Ed Pino</span>
-        </div>
-
-        <nav className="nav" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`}>
-              {item}
-            </a>
-          ))}
+        <a className="brand" href="#top" aria-label="Ed Pino home"><span className="brand-mark">EP</span><span>Ed Pino</span></a>
+        <nav className="nav" aria-label={language === 'en' ? 'Main navigation' : 'Navegación principal'}>
+          {text.nav.map((item, index) => <a key={item} href={`#${['about', 'stack', 'projects', 'strengths', 'contact'][index]}`}>{item}</a>)}
         </nav>
-
-        <a className="nav-button" href="#contact">
-          Let's connect
-        </a>
+        <div className="header-actions">
+          <a className="nav-button" href="#contact">{text.connect}</a>
+          <button className="header-control" type="button" onClick={toggleTheme} aria-label={theme === 'dark' ? text.theme : 'Switch to dark theme'} title={theme === 'dark' ? text.theme : 'Switch to dark theme'}>
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button className="header-control language-control" type="button" onClick={toggleLanguage} aria-label={text.language} title={text.language}>
+            <Languages size={18} /><span>{language === 'en' ? 'ES' : 'EN'}</span>
+          </button>
+        </div>
       </header>
 
-      <main>
+      <main id="top">
         <section className="hero container">
           <div className="hero-copy">
-            <p className="eyebrow">
-              <Sparkles size={16} /> Full-Stack Developer — Java • React • PostgreSQL
-            </p>
-
-            <h1>
-              Building reliable digital products with <span>Java</span>, <span>React</span>, and
-              clean architecture.
-            </h1>
-
-            <p className="lead">
-              Desarrollador full-stack versátil con fortaleza en backend Java / Spring Boot y
-              capacidad para aplicaciones empresariales complejas con integración de APIs modernas:
-              OpenAI, Gutendex, WhatsApp, LinkedIn y más.
-            </p>
-
+            <p className="eyebrow">{text.eyebrow}</p>
+            <h1>{text.title.split(/(Java|React)/).map((part, i) => part === 'Java' || part === 'React' ? <span key={i}>{part}</span> : part)}</h1>
+            <p className="lead">{text.lead}</p>
             <div className="cta-row">
-              <a className="primary-btn" href="#projects">
-                See projects <ArrowRight size={18} />
-              </a>
-              <a className="secondary-btn" href="https://github.com/Ed-Pino" target="_blank" rel="noreferrer">
-                <Code2 size={18} /> GitHub — Ed-Pino
-              </a>
+              <a className="primary-btn" href="#projects">{text.projects}<ArrowRight size={18} /></a>
+              <a className="secondary-btn" href="https://github.com/Ed-Pino" target="_blank" rel="noreferrer"><Code2 size={18} /> GitHub — Ed-Pino</a>
             </div>
-
-            <div className="mini-stats" aria-label="portfolio stats">
-              {stats.map((stat) => (
-                <div key={stat.label} className="stat-box">
-                  <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
-                </div>
-              ))}
+            <div className="mini-stats" aria-label="Portfolio statistics">
+              {[['3+', language === 'en' ? 'Years of experience' : 'Años de experiencia'], ['11+', language === 'en' ? 'REST APIs built' : 'APIs REST creadas'], ['15+', language === 'en' ? 'Featured repositories' : 'Repositorios destacados'], ['7', language === 'en' ? 'Service categories' : 'Categorías de servicio']].map(([value, label]) => <div key={label} className="stat-box"><strong>{value}</strong><span>{label}</span></div>)}
             </div>
           </div>
-
-          <div className="hero-panel" aria-label="Professional summary card">
-            <div className="panel-header">
-              <span className="status-dot" />
-              Available for opportunities
-            </div>
-
+          <aside className="hero-panel">
+            <div className="panel-header"><span className="status-dot" />{text.available}</div>
             <div className="panel-body">
-              <div className="profile-badge">
-                <BriefcaseBusiness size={20} />
-                Mid-Level / Semi-Senior
-              </div>
-
-              <ul>
-                <li>Java 17 • Spring Boot 3 • Spring Data JPA</li>
-                <li>React + TypeScript + PostgreSQL</li>
-                <li>REST APIs, JWT & OpenAI Integration</li>
-                <li>E-commerce • Video Processing • PWA</li>
-              </ul>
-
-              <div className="location-row">
-                <MapPin size={16} />
-                <span>Open to remote and hybrid projects</span>
-              </div>
+              <div className="profile-badge"><BriefcaseBusiness size={20} />{text.role}</div>
+              <ul><li>Java 17 • Spring Boot 3 • Spring Data JPA</li><li>React + TypeScript + PostgreSQL</li><li>REST APIs, JWT & OpenAI Integration</li><li>E-commerce • Video Processing • PWA</li></ul>
+              <div className="location-row"><MapPin size={16} /><span>{text.remote}</span></div>
             </div>
-          </div>
+          </aside>
         </section>
 
-        <section id="about" className="about container section-block">
-          <div className="section-heading">
-            <p className="eyebrow accent">About me</p>
-            <h2>Developer focused on solving real business problems.</h2>
-          </div>
-
-          <div className="about-grid">
-            <p>
-              Soy Ed-Pino, desarrollador full-stack con 3+ años construyendo productos escalables.
-              Especialista en backend Java / Spring Boot, con frontend sólido en React + TypeScript
-              y PostgreSQL como base de datos principal.
-            </p>
-            <p>
-              He construido desde plataformas enterprise como FieldFlow y ForoHub, hasta e-commerce
-              (GasSolution, Ecomart con OpenAI), multimedia (EleVideo), finanzas, IA y CRM. Me
-              enfoco en código limpio, seguridad con JWT y experiencias que aportan valor real.
-            </p>
-          </div>
+        <section id="about" className="container section-block">
+          <div className="section-heading"><p className="eyebrow accent">{text.about}</p><h2>{text.aboutTitle}</h2></div>
+          <div className="about-grid"><p>{text.aboutText}</p><p>{language === 'en' ? 'I have built enterprise platforms such as FieldFlow and ForoHub, as well as e-commerce, multimedia, finance, AI, and CRM projects. I focus on clean code, JWT security, and experiences that deliver real value.' : 'He creado plataformas empresariales como FieldFlow y ForoHub, además de proyectos de comercio electrónico, multimedia, finanzas, IA y CRM. Me enfoco en código limpio, seguridad JWT y experiencias que aportan valor real.'}</p></div>
         </section>
 
         <section id="stack" className="container section-block">
-          <div className="section-heading">
-            <p className="eyebrow accent">Tech stack</p>
-            <h2>Stack tecnológico identificado.</h2>
-            <p className="section-sub">
-              Backend robusto • Frontend moderno • Datos persistentes • APIs e integraciones
-            </p>
-          </div>
-
-          <div className="stack-grid">
-            {stackGroups.map((group) => (
-              <div key={group.title} className="stack-card">
-                <h3>{group.title}</h3>
-                <ul>
-                  {group.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <div className="section-heading"><p className="eyebrow accent">{text.stack}</p><h2>{text.stackTitle}</h2></div>
+          <div className="stack-grid">{stacks.map(([title, ...items]) => <div key={title} className="stack-card"><h3>{title}</h3><ul>{items.map(item => <li key={item}>{item}</li>)}</ul></div>)}</div>
         </section>
 
         <section id="projects" className="container section-block">
-          <div className="section-heading">
-            <p className="eyebrow accent">Featured projects</p>
-            <h2>Mejores repositorios por servicio y funcionalidad.</h2>
-            <p className="section-sub">
-              {filteredProjects.length} proyectos — filtra por categoría de negocio
-            </p>
-          </div>
-
-          <div className="filter-row" role="tablist" aria-label="Filter projects by category">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                role="tab"
-                aria-selected={activeCategory === cat}
-                className={activeCategory === cat ? 'filter-btn active' : 'filter-btn'}
-                onClick={() => setActiveCategory(cat)}
-                type="button"
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="project-grid">
-            {filteredProjects.map((project) => {
-              const Icon = categoryIcons[project.category] ?? Code2
-              return (
-                <article key={project.name} className="project-card">
-                  <div className="project-meta">
-                    <span className="project-badge">{project.status}</span>
-                    <span className="project-level">
-                      <Icon size={13} /> {project.category}
-                    </span>
-                  </div>
-
-                  <h3>{project.name}</h3>
-                  <p>{project.description}</p>
-
-                  <ul className="feature-list">
-                    {project.features.map((f) => (
-                      <li key={f}>{f}</li>
-                    ))}
-                  </ul>
-
-                  <div className="chip-list">
-                    {project.stack.map((tech) => (
-                      <span key={tech} className="chip">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <a href={project.repo} target="_blank" rel="noreferrer">
-                    View repository <ArrowRight size={16} />
-                  </a>
-                </article>
-              )
-            })}
-          </div>
+          <div className="section-heading"><p className="eyebrow accent">{text.projectsTitle}</p><h2>{language === 'en' ? 'Selected work across products and platforms.' : 'Una selección de productos y plataformas.'}</h2><p className="section-sub">{text.projectsSub}</p></div>
+          <div className="project-grid">{projects.map(project => <article key={project.name} className="project-card"><div className="project-meta"><span className="project-badge">{language === 'en' ? 'Featured' : 'Destacado'}</span></div><h3>{project.name}</h3><p>{project.description}</p><div className="chip-list">{project.stack.split(' · ').map(item => <span key={item} className="chip">{item}</span>)}</div><a href={`https://github.com/Ed-Pino/${project.url}`} target="_blank" rel="noreferrer">{text.viewRepo}<ArrowRight size={16} /></a></article>)}</div>
         </section>
 
         <section id="strengths" className="container section-block profile-section">
-          <div className="section-heading">
-            <p className="eyebrow accent">Professional profile</p>
-            <h2>Resumen de fortalezas.</h2>
-          </div>
-
-          <div className="profile-layout">
-            <div className="profile-list">
-              {strengths.map((highlight) => (
-                <div key={highlight} className="highlight-item">
-                  <span className="highlight-icon">
-                    <Layers3 size={16} />
-                  </span>
-                  <p>{highlight}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="strength-card">
-              <Rocket size={22} />
-              <h3>Product mindset</h3>
-              <p>
-                Backend robusto y escalable + frontend React + integraciones modernas (OpenAI,
-                Gutendex, WhatsApp). PWA, JWT y arquitectura limpia para apps empresariales
-                complejas.
-              </p>
-              <ul className="strength-mini">
-                {profileHighlights.map((h) => (
-                  <li key={h}>{h}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <div className="section-heading"><p className="eyebrow accent">{text.strengths}</p><h2>{text.strengthsTitle}</h2></div>
+          <div className="profile-layout"><div className="profile-list">{(language === 'en' ? ['Java / Spring Boot expertise for robust, scalable backends', 'Full-stack development with React + TypeScript', 'External API integrations: OpenAI, Gutendex, WhatsApp, LinkedIn', 'Secure authentication with JWT and clean architecture'] : ['Especialista en Java / Spring Boot para backends robustos y escalables', 'Desarrollo full-stack con React + TypeScript', 'Integración de APIs externas: OpenAI, Gutendex, WhatsApp, LinkedIn', 'Autenticación segura con JWT y arquitectura limpia']).map(item => <div key={item} className="highlight-item"><span className="highlight-icon"><Code2 size={16} /></span><p>{item}</p></div>)}</div><div className="strength-card"><BriefcaseBusiness size={22} /><h3>Product mindset</h3><p>{language === 'en' ? 'Scalable backends, modern React frontends, and thoughtful integrations for business applications.' : 'Backends escalables, interfaces modernas en React e integraciones para aplicaciones de negocio.'}</p></div></div>
         </section>
 
-        <section id="contact" className="container section-block cta-section">
-          <div className="cta-card">
-            <div>
-              <p className="eyebrow accent">Let's connect</p>
-              <h2>Open to new challenges, collaborations and technical opportunities.</h2>
-            </div>
-
-            <div className="contact-actions">
-              <a href="https://github.com/Ed-Pino" target="_blank" rel="noreferrer">
-                <Code2 size={18} /> GitHub
-              </a>
-              <a href="mailto:hello@portfolio.dev">
-                <Mail size={18} /> Email
-              </a>
-            </div>
-          </div>
-        </section>
+        <section id="contact" className="container section-block cta-section"><div className="cta-card"><div><p className="eyebrow accent">{text.contact}</p><h2>{text.contactTitle}</h2></div><div className="contact-actions"><a href="https://github.com/Ed-Pino" target="_blank" rel="noreferrer"><Code2 size={18} /> GitHub</a><a href="mailto:hello@portfolio.dev"><Mail size={18} /> Email</a></div></div></section>
       </main>
-
-      <footer className="footer container">
-        <p>© 2026 Ed Pino — Full-Stack Developer • Java Spring Boot • React TypeScript</p>
-      </footer>
+      <footer className="footer container"><p>© 2026 Ed Pino — {text.footer}</p></footer>
     </div>
   )
 }
