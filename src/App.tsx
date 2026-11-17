@@ -51,10 +51,13 @@ const projects = [
   { name: 'EleVideo', url: 'EleVideo', description: 'Video editor for converting vertical videos to horizontal format with duration controls.', stack: 'TypeScript · React · Vite · Tailwind' },
 ]
 const stacks = [
-  ['Backend', 'Java 17', 'Spring Boot 3', 'Spring Data JPA', 'Spring Security', 'Flyway'],
-  ['Frontend', 'React', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
-  ['Databases', 'PostgreSQL', 'MySQL', 'H2', 'JPA / Hibernate'],
-  ['APIs & tools', 'REST APIs', 'OpenAI', 'JWT', 'Swagger / OpenAPI', 'Git / GitHub', 'Docker'],
+  ['Backend', 'Java 17', 'Spring Boot 3', 'Spring Data JPA', 'Spring Security', 'Flyway', 'Node.js'],
+  ['Frontend', 'React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Tailwind', 'Vite'],
+  ['Databases', 'PostgreSQL', 'NoSQL', 'MySQL', 'H2', 'JPA / Hibernate'],
+  ['Cloud & DevOps', 'AWS', 'Docker', 'Git / GitHub', 'Oracle Cloud'],
+  ['Languages', 'Python', 'JavaScript', 'TypeScript', 'Java'],
+  ['APIs & tools', 'REST APIs', 'OpenAI', 'JWT', 'Swagger / OpenAPI'],
+  ['Solutions', 'E-commerce', 'Video Processing', 'PWA'],
 ]
 
 function App() {
@@ -111,7 +114,7 @@ function App() {
             <div className="panel-header"><span className="status-dot" />{text.available}</div>
             <div className="panel-body">
               <div className="profile-badge"><BriefcaseBusiness size={20} />{text.role}</div>
-              <ul><li>Java 17 • Spring Boot 3 • Spring Data JPA</li><li>React + TypeScript + PostgreSQL</li><li>REST APIs, JWT & OpenAI Integration</li><li>E-commerce • Video Processing • PWA</li></ul>
+              <ul><li>Java • Spring Boot • Spring Data JPA • Python • Node.js • Next.js</li><li>React + TypeScript + PostgreSQL + NoSQL</li><li>REST APIs, JWT & OpenAI Integration</li><li>E-commerce • Video Processing • PWA</li></ul>
               <div className="location-row"><MapPin size={16} /><span>{text.remote}</span></div>
             </div>
           </aside>
